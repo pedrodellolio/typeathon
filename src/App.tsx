@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./components/Tooltip";
 const words = [
   "Amor",
   "Feliz",
@@ -38,24 +39,27 @@ interface Word {
 
 interface Letter {
   char: string;
-  state?: number;
+  state?: number; // 0 - error; 1 - correct; 2 - missed; undefined - unreached letter
 }
 
-const TIMER_VALUE = 10;
-const BASE_POINTS = 6;
 function App() {
   const [input, setInput] = useState("");
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentTestWords, setCurrentTestWords] = useState<Word[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [timer, setTimer] = useState(TIMER_VALUE);
+  const [timerStart, setTimerStart] = useState(30);
+  const [timer, setTimer] = useState(0);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [wpm, setWpm] = useState(0.0);
   const [accuracy, setAccuracy] = useState(0.0);
   const [showTestResults, setShowTestResults] = useState(false);
   const [countErrors, setCountErrors] = useState(0);
-  const [countCorrect, setCountCorrect] = useState(0);
+  const [countCorrect, setCountCorrect] = useState(0); //count the same letter multiple times
+  const [totalCorrectLetters, setTotalCorrectLetters] = useState(0); //count only the first time the player hit the letter correctly
+  const [totalIncorrectLetters, setTotalIncorrectLetters] = useState(0); //count only the first time the player hit the letter correctly
+  const [totalMissedLetters, setTotalMissedLetters] = useState(0);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const wordRefs = useRef<Array<HTMLDivElement | null>>([]);
 
@@ -65,51 +69,46 @@ function App() {
   }, []);
 
   useEffect(() => {
+    restartTest();
+  }, [timerStart]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (timer > 0) {
-        if (isTyping) setTimer((prevTimer) => prevTimer - 1);
+        if (isTyping) {
+          setTimer((prevTimer) => prevTimer - 1);
+        }
       } else {
-        // Timer reached 0, reset test
+        // Timer reached 0, finish test
         clearInterval(interval);
         const wordsCompleted = currentTestWords.filter((word) =>
           word.letters.every((letter) => letter.state === 1)
         );
-        // setWpm(getWpm(wordsCompleted));
+        const totalCorrectLetters = wordsCompleted.reduce(
+          (acc, word) => acc + word.letters.length,
+          0
+        );
+        const totalIncorrectLetters = currentTestWords.flatMap((word) =>
+          word.letters.filter((letter) => letter.state === 0)
+        ).length;
+        const totalMissedLetters = currentTestWords.flatMap((word) =>
+          word.letters.filter((letter) => letter.state === 2)
+        ).length;
+        setTotalCorrectLetters(totalCorrectLetters);
+        setTotalIncorrectLetters(totalIncorrectLetters);
+        setTotalMissedLetters(totalMissedLetters);
+        setWpm(getWpm(totalCorrectLetters));
         setAccuracy(getAccuracy());
         setShowTestResults(true);
-        // restartTest();
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [timer, isTyping]); // Added timer as a dependency
 
-  const getWpm = (completed: Word[]) => {
-    // const totalTime = TIMER_VALUE - timer;
-    // const totalLetters = completed.reduce(
-    //   (acc, word) => acc + word.letters.length,
-    //   0
-    // );
-    // const letterPoints = {
-    //   1: BASE_POINTS * 0.33,
-    //   2: BASE_POINTS * 0.66,
-    //   3: BASE_POINTS * 0.99,
-    //   4: BASE_POINTS * 1,
-    //   5: BASE_POINTS * 1.65,
-    //   6: BASE_POINTS * 1.98,
-    //   7: BASE_POINTS * 2.31,
-    //   8: BASE_POINTS * 2.64,
-    //   9: BASE_POINTS * 2.97,
-    // };
-    // let totalPoints = 0;
-    // completed.forEach((word) => {
-    //   word.letters.forEach((letter) => {
-    //     if (letter.state === 1) {
-    //       totalPoints += letterPoints[letter.char.length];
-    //     }
-    //   });
-    // });
-    // return (totalLetters * 60) / (totalTime * totalPoints);
+  const getWpm = (totalCorrect: number) => {
+    const totalTime = timerStart - timer;
+    return (totalCorrect * (60 / totalTime)) / 5;
   };
 
   const getAccuracy = () => {
@@ -123,9 +122,11 @@ function App() {
     setCurrentLetterIndex(0);
     setCurrentWordIndex(0);
     setIsTyping(false);
-    setTimer(TIMER_VALUE);
+    setTimerStart(timerStart);
+    setTimer(timerStart);
     setWpm(0.0);
     setAccuracy(0.0);
+    setCountCorrect(0);
     setCountErrors(0);
     setShowTestResults(false);
     inputRef.current?.focus();
@@ -162,7 +163,7 @@ function App() {
       ? segments[currentWordIndex].toLowerCase().trim()
       : "";
 
-    // Updates letter state based on typed input: 0 - error; 1 - correct; undefined - unreached letter
+    // Updates letter state based on typed input: 0 - error; 1 - correct; 2 - missed; undefined - unreached letter
     const updatedLetters = currentWord.letters.map((letter, index) => {
       if (typedWord[index] === undefined) {
         return { ...letter, state: undefined };
@@ -195,7 +196,7 @@ function App() {
               ...word,
               letters: word.letters.map((letter) => ({
                 ...letter,
-                state: letter.state === undefined ? 0 : letter.state,
+                state: letter.state === undefined ? 2 : letter.state,
               })),
             };
           }
@@ -237,16 +238,57 @@ function App() {
     }
   };
 
+  const progress = timer / timerStart;
   return (
-    <div className="flex flex-col items-center justify-center mt-56 mx-auto max-w-[900px]">
-      <div className="px-3 flex flex-row items-center justify-start gap-4 w-full mb-6">
-        <button
-          onClick={restartTest}
-          className="self-start border border-gray-300 px-2 py-1 rounded-md"
-        >
-          Restart
-        </button>
-        <span className="text-lg font-semibold text-gray-500">{timer}s</span>
+    <div className="flex flex-col items-center justify-center mt-56 mx-auto w-[900px]">
+      <div className="flex flex-col mb-10 w-full bg-gray-50 rounded-md text-sm text-gray-500 font-semibold">
+        <div className="px-5 py-1 flex flex-row items-center justify-between gap-4">
+          <p className="">portuguese</p>
+          <ul className="flex flex-row items-center gap-6">
+            <li>
+              <button
+                onClick={() => setTimerStart(15)}
+                className={`px-2 py-1 ${
+                  timerStart === 15 && "text-blue-500 font-bold"
+                }`}
+              >
+                15s
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setTimerStart(30)}
+                className={`px-2 py-1 ${
+                  timerStart === 30 && "text-blue-500 font-bold"
+                }`}
+              >
+                30s
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setTimerStart(60)}
+                className={`px-2 py-1 ${
+                  timerStart === 60 && "text-blue-500 font-bold"
+                }`}
+              >
+                60s
+              </button>
+            </li>
+          </ul>
+          <button
+            onClick={restartTest}
+            className="self-start border border-gray-300 px-2 py-1 rounded-md"
+          >
+            <i className="ri-loop-right-line"></i>
+          </button>
+        </div>
+        <div
+          className="h-1 bg-blue-500 transition-all duration-1000"
+          style={{
+            width: `${progress * 100}%`,
+          }}
+        />
       </div>
 
       <div
@@ -256,19 +298,68 @@ function App() {
         }}
       >
         {showTestResults ? (
-          <div
-            className={`absolute top-0 left-0 w-full h-full z-50 pointer-events-none select-none flex flex-col items-start justify-center bg-white transition-opacity duration-150`}
-          >
-            <p className="text-center font-mono">WPM: {wpm}</p>
-            <div className="flex flex-row gap-4">
-              <p className="text-center font-mono">
-                Accuracy: {accuracy.toFixed(0)}%
-              </p>
-              <p className="text-center font-mono">
-                {countCorrect} / {countErrors}
-              </p>
+          <>
+            <div
+              className={`px-3 absolute top-0 left-0 w-full h-full z-10 select-none flex flex-col items-start justify-center bg-white transition-opacity duration-150`}
+            >
+              <div className="flex flex-row gap-2">
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="text-left font-mono text-lg border border-gray-200 rounded-md w-36 h-32">
+                      <p className="px-4 pt-4 text-gray-500 text-sm">wpm</p>
+                      <p className="text-center pt-4 text-3xl">
+                        {wpm.toFixed(0)}
+                      </p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+                    {wpm.toFixed(2)} wpm
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger className="text-center font-mono">
+                    <div className="text-left font-mono text-lg border border-gray-200 rounded-md w-36 h-32">
+                      <p className="px-4 pt-4 text-gray-500 text-sm">acc</p>
+                      <p className="text-center pt-4 text-3xl">
+                        {accuracy.toFixed(0)}%
+                      </p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+                    {countCorrect} correct / {countErrors} incorrect
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger className="text-center font-mono">
+                    <div className="text-left font-mono text-lg border border-gray-200 rounded-md w-36 h-32">
+                      <p className="px-4 pt-4 text-gray-500 text-sm">time</p>
+                      <p className="text-center pt-4 text-3xl">{timerStart}s</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+                    {timerStart}s
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger className="text-center font-mono">
+                    <div className="text-left font-mono text-lg border border-gray-200 rounded-md w-64 h-32">
+                      <p className="px-4 pt-4 text-gray-500 text-sm">ratio</p>
+                      <p className="text-center pt-4 text-3xl">
+                        {totalCorrectLetters} / {totalIncorrectLetters} /{" "}
+                        {totalMissedLetters}
+                      </p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+                    correct / incorrect / missed
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
-          </div>
+          </>
         ) : (
           <div
             className={`absolute top-0 left-0 w-full h-full z-50 pointer-events-none select-none flex items-center justify-center backdrop-blur-sm transition-opacity duration-150 ${
@@ -278,7 +369,6 @@ function App() {
             <p className="text-center font-mono">Click here to focus</p>
           </div>
         )}
-
         <div
           className={`overflow-hidden select-none pointer-events-none flex flex-row flex-wrap w-full h-[120px] gap-3 text-2xl ${
             !isInputFocused && "opacity-45"
@@ -314,6 +404,9 @@ function App() {
                           : letter.state === 1
                           ? "text-black"
                           : "text-gray-400"
+                      } ${
+                        letter.state === 2 &&
+                        "underline underline-offset-4 decoration-2 decoration-red-500"
                       }`}
                     >
                       {letter.char}

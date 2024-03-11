@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.9",
     "@fontsource-variable/roboto-mono": "^5.0.18",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "remixicon": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

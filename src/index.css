@@ -1,5 +1,5 @@
-@import '@fontsource-variable/roboto-mono';
-
+@import "@fontsource-variable/roboto-mono";
+@import "remixicon/fonts/remixicon.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
