@@ -24,7 +24,7 @@ export const generateTestWords = async (
   // Get a set of words for the current test
   const currentLanguage = wordsets[languageIndex];
   const wordset = (await import(
-    `../static/languages/${currentLanguage}`
+    `../static/languages/${currentLanguage}.json`
   )) as Wordset;
 
   // Shuffle the array of words
