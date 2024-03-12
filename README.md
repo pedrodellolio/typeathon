@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+![image](https://github.com/pedrodellolio/typeathon/assets/62517267/508806fa-ba3f-4dfb-938c-f117e800a1ff)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# TYPE-A-THON
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+## Descrição
+O TYPE-A-THON é um **teste de digitação** desenvolvido em **React**. O objetivo do teste é bem simples: **digitar o maior número de palavras dentro do tempo definido**. A relação entre palavras corretas e palavras digitadas incorretamente definirá ao final o seu **WPM** (words per minute) e **acurácia**.
 
-Currently, two official plugins are available:
+[Clique aqui](https://typeathon.vercel.app) para acessar o app.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- Interface simples e minimalista
+- Estatísticas de desempenho ao final da partida
+- Dark/light mode
 
-## Expanding the ESLint configuration
+## Tecnologias Utilizadas
+- React
+- TypeScript
+- Tailwind CSS
+- Remix Icons
+- Floating UI
+- Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Instalação e Uso
+1. Clone o repositório: `git clone https://github.com/pedrodellolio/typeathon.git`
+2. Instale as dependências: `npm install`, `yarn install` ou `pnpm install`
+3. Execute o projeto: `npm run dev`, `yarn dev` ou `pnpm run dev`
