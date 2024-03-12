@@ -15,7 +15,7 @@ type Props = {
 
 function Results(props: Props) {
   const wpm = useMemo(() => {
-    return getWpm(props.start, props.left, props.totalCorrectWords);
+    return getWpm(props.start, props.left, props.uniqueCorrectLetters);
   }, [props.start, props.left, props.totalCorrectWords]);
 
   const accuracy = useMemo(() => {
@@ -25,12 +25,12 @@ function Results(props: Props) {
   return (
     <>
       <div
-        className={`px-3 absolute top-0 left-0 w-full h-full z-10 select-none flex flex-col items-start justify-center bg-white transition-opacity duration-150`}
+        className={`px-3 absolute top-0 w-full h-full z-10 select-none flex flex-col justify-center items-start bg-white transition-opacity duration-150`}
       >
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row m-auto gap-2">
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-20 h-32">
+              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
                 <p className="px-4 pt-4 text-gray-500 text-sm">wpm</p>
                 <p className="text-center pt-4 text-3xl">{wpm.toFixed(0)}</p>
               </div>
@@ -42,7 +42,7 @@ function Results(props: Props) {
 
           <Tooltip>
             <TooltipTrigger className="text-center font-mono">
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-20 h-32">
+              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
                 <p className="px-4 pt-4 text-gray-500 text-sm">acc</p>
                 <p className="text-center pt-4 text-3xl">
                   {accuracy.toFixed(0)}%
@@ -56,7 +56,7 @@ function Results(props: Props) {
 
           <Tooltip>
             <TooltipTrigger className="text-center font-mono">
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-40 h-32">
+              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
                 <p className="px-4 pt-4 text-gray-500 text-sm">time</p>
                 <p className="text-center pt-4 text-3xl">{props.start}s</p>
               </div>

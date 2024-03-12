@@ -8,9 +8,15 @@ dependencies:
   '@floating-ui/react':
     specifier: ^0.26.9
     version: 0.26.9(react-dom@18.2.0)(react@18.2.0)
+  '@fontsource-variable/raleway':
+    specifier: ^5.0.18
+    version: 5.0.18
   '@fontsource-variable/roboto-mono':
     specifier: ^5.0.18
     version: 5.0.18
+  '@fontsource/poppins':
+    specifier: ^5.0.12
+    version: 5.0.12
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -586,8 +592,16 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
+  /@fontsource-variable/raleway@5.0.18:
+    resolution: {integrity: sha512-gd1W+taHZoWe6FoqdbMogSYfp8FK4WUsFse43zvM4NC3s5IoQBdGlMB7XGTdiNux+Ult1wkrlYpiSedSWLjSMw==}
+    dev: false
+
   /@fontsource-variable/roboto-mono@5.0.18:
     resolution: {integrity: sha512-AIqr9HYQDqiJjGcs/fHedGc0ZGfEGdixm87O9viAQ4PXfiLEelpCnE2jlviJaYcGi3UHxe9+Nn3SalcHhKFSjw==}
+    dev: false
+
+  /@fontsource/poppins@5.0.12:
+    resolution: {integrity: sha512-0qzBxtIJLh82iMJ9pCXKYwGs1zyS+jyUmwVJ59+JdYnEaFVkDsxVOk9yDWfVOs14ALUneodU2m5YSGma6dCYCw==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

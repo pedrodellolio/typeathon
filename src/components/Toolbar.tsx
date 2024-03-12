@@ -11,7 +11,7 @@ function Toolbar(props: Props) {
   const language = searchParams.get("lang") ?? "0";
 
   return (
-    <div className="flex flex-col mb-10 w-full bg-gray-50 rounded-md text-sm text-gray-500 font-semibold">
+    <div className="flex flex-col mb-10 w-full bg-gray-50 rounded-md text-sm text-gray-500 font-medium">
       <div className="px-5 py-1 flex flex-row items-center justify-between gap-4">
         <p className="">{wordsets[parseInt(language)].replace("_", " ")}</p>
         <ul className="flex flex-row items-center gap-6">
