@@ -25,58 +25,62 @@ function Results(props: Props) {
   return (
     <>
       <div
-        className={`px-3 absolute top-0 w-full h-full z-10 select-none flex flex-col justify-center items-start bg-white transition-opacity duration-150`}
+        className={`px-3 absolute top-0 w-full h-full z-10 select-none flex flex-col justify-center items-start bg-white transition-opacity duration-150 dark:bg-gray-900`}
       >
-        <div className="flex flex-row m-auto gap-2">
+        <div className="flex flex-row m-auto gap-2 mt-4">
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
+              <div className="select-none flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32 dark:border-gray-700">
                 <p className="px-4 pt-4 text-gray-500 text-sm">wpm</p>
-                <p className="text-center pt-4 text-3xl">{wpm.toFixed(0)}</p>
+                <p className="text-center pt-4 text-4xl text-gray-900 dark:text-gray-100">
+                  {wpm.toFixed(0)}
+                </p>
               </div>
             </TooltipTrigger>
-            <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+            <TooltipContent className="Tooltip font-mono z-20 bg-gray-100 p-1 px-3 rounded-md dark:bg-gray-800 dark:text-gray-200">
               {wpm.toFixed(2)} wpm
             </TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger className="text-center font-mono">
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
+              <div className="select-none flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32 dark:border-gray-700">
                 <p className="px-4 pt-4 text-gray-500 text-sm">acc</p>
-                <p className="text-center pt-4 text-3xl">
+                <p className="text-center pt-4 text-4xl text-gray-900 dark:text-gray-100">
                   {accuracy.toFixed(0)}%
                 </p>
               </div>
             </TooltipTrigger>
-            <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+            <TooltipContent className="Tooltip font-mono z-20 bg-gray-100 p-1 px-3 rounded-md dark:bg-gray-800 dark:text-gray-200">
               {props.totalCorrect} correct / {props.totalErrors} incorrect
             </TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger className="text-center font-mono">
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32">
+              <div className="select-none flex-1 text-left font-mono text-lg border border-gray-200 rounded-md min-w-32 h-32 dark:border-gray-700">
                 <p className="px-4 pt-4 text-gray-500 text-sm">time</p>
-                <p className="text-center pt-4 text-3xl">{props.start}s</p>
+                <p className="text-center pt-4 text-4xl text-gray-900 dark:text-gray-100">
+                  {props.start}s
+                </p>
               </div>
             </TooltipTrigger>
-            <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+            <TooltipContent className="Tooltip font-mono z-20 bg-gray-100 p-1 px-3 rounded-md dark:bg-gray-800 dark:text-gray-200">
               {props.start}s
             </TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger className="text-center font-mono">
-              <div className="flex-1 text-left font-mono text-lg border border-gray-200 rounded-md w-[350px] h-32">
+              <div className="select-none flex-1 text-left font-mono text-lg border border-gray-200 rounded-md w-[350px] h-32 dark:border-gray-700">
                 <p className="px-4 pt-4 text-gray-500 text-sm">ratio</p>
-                <p className="text-center pt-4 text-3xl">
+                <p className="text-center pt-4 text-4xl text-gray-900 dark:text-gray-100">
                   {props.uniqueCorrectLetters} / {props.uniqueMistypedLetters} /{" "}
                   {props.uniqueMissedLetters}
                 </p>
               </div>
             </TooltipTrigger>
-            <TooltipContent className="Tooltip font-mono z-20 bg-gray-200 p-1 px-3 rounded-md">
+            <TooltipContent className="Tooltip font-mono z-20 bg-gray-100 p-1 px-3 rounded-md dark:bg-gray-800 dark:text-gray-200">
               correct / incorrect / missed
             </TooltipContent>
           </Tooltip>

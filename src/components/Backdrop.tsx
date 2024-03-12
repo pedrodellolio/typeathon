@@ -9,7 +9,7 @@ function Backdrop(props: Props) {
         props.isInputFocused ? "opacity-0" : "opacity-100"
       }`}
     >
-      <p className="text-center font-mono">Click here to focus</p>
+      <p className="text-center font-mono text-gray-900 dark:text-gray-100">Click here to focus</p>
     </div>
   );
 }

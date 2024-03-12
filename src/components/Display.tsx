@@ -3,7 +3,6 @@ import { Word } from "../models/word";
 
 type Props = {
   words: Word[];
-  inputRef: React.RefObject<HTMLInputElement>;
   wordRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
   currentWordIndex: number;
   currentLetterIndex: number;
@@ -45,8 +44,8 @@ function Display(props: Props) {
                     letter.state === 0
                       ? "text-red-500"
                       : letter.state === 1
-                      ? "text-black"
-                      : "text-gray-400"
+                      ? "text-gray-900 dark:text-gray-100"
+                      : "text-gray-400 dark:text-gray-600"
                   } ${
                     letter.state === 2 &&
                     "underline underline-offset-4 decoration-2 decoration-red-500"

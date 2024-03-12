@@ -178,7 +178,7 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-56 mx-auto w-[900px]">
+    <div className="flex flex-col items-center justify-center mt-56 mx-auto w-[1000px]">
       <Toolbar left={timer} restartTest={restartTest} />
       <div
         className="relative h-120 w-full"
