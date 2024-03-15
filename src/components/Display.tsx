@@ -12,7 +12,7 @@ type Props = {
 function Display(props: Props) {
   return (
     <div
-      className={`overflow-hidden select-none pointer-events-none flex flex-row flex-wrap w-full h-[120px] gap-3 text-2xl ${
+      className={`overflow-y-hidden select-none pointer-events-none flex flex-row flex-wrap w-auto h-[120px] gap-3 text-2xl ${
         !props.isInputFocused && "opacity-45"
       } px-3`}
     >

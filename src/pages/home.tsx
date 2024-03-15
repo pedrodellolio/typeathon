@@ -86,6 +86,8 @@ function Home() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
     setIsTyping(true);
     const typedValue = e.target.value;
     const segments = typedValue.split(" ");
@@ -149,12 +151,12 @@ function Home() {
 
       // Scroll to make hidden words visible
       const lastVisibleIndex = Math.min(
-        currentWordIndex - 4,
+        currentWordIndex - 6,
         currentTestWords.length - 1
       );
 
       wordRefs.current[lastVisibleIndex]?.scrollIntoView({
-        behavior: "smooth",
+        // behavior: "smooth", //is not working with edge and chrome browsers
         block: "start",
         inline: "nearest",
       });
